@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define "workshed" do |workshed|
+  end
+
+  config.vm.hostname    = "pcd"
+  config.ssh.username   = 'root'
+  config.ssh.password   = 'vagrant'
+  config.ssh.insert_key = 'true'
+
+  config.vm.box = "bento/centos-7.3"
+  config.vm.provider "virtualbox" do |vb|
+     vb.name = "PCD-19"
+     vb.cpus = "1"
+     vb.memory = "1024"
+  end
+
+  config.vm.provision "shell",
+    privileged: true,
+    path: "provision/bootstrap.sh"
+end
