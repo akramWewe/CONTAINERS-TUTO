@@ -59,3 +59,8 @@ do
     sleep 20 &
 done
 ```
+
+# clean all
+```
+$ kubectl delete po,deployment --all
+```
