@@ -1,5 +1,7 @@
-# démarrer la vm vagrant
-$ podman-machine ssh
+# démarrer la vm podman-machine
+```
+$ podman-machine ssh PCD-CRIO-19
+```
 
 # know version podman
 $ podman version
