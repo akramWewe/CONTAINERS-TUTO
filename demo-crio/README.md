@@ -4,7 +4,7 @@
 $ ps aux | grep crio
 $ cat /etc/crictl.yaml
 ```
-## demo-crio ##
+## demo-crio
 ```
 $ kubectl version
 $ kubectl run httpd --generator=run-pod/v1 --image=httpd
