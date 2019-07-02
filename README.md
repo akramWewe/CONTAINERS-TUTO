@@ -1,15 +1,18 @@
 # start podman-machine
 ```
-podman-machine create --virtualbox-boot2podman-url https://github.com/boot2podman/boot2podman/releases/download/v0.21/boot2podman-kubernetes.iso PCD-CRIO-19
+podman-machine create --virtualbox-boot2podman-url https://github.com/boot2podman/boot2podman/releases/download/v0.21/boot2podman-kubernetes.iso WSC
 ```
 # podman-machine launch
 ```
-podman-machine ssh PCD-CRIO-19
+podman-machine ssh WSC
 ```
 # install k3s, crio
 ```
 tce-load -i crio k3s
 tce-load -iw curl
+tce-load -iw git
+tce-load -iw bash
+
 ```
 # start process crio
 ```

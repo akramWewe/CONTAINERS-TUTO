@@ -130,6 +130,20 @@ function pe() {
 }
 
 ##
+# Prints the execution of a command
+#
+# takes 1 parameter - the string command to run
+#
+# usage: e "ls -l"
+#
+##
+function e() {
+
+  # execute the command
+  eval "$@"
+}
+
+##
 # Enters script into interactive mode
 #
 # and allows newly typed commands to be executed within the script
