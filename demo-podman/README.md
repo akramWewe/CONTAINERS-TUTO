@@ -45,8 +45,9 @@ $ podman pod --help
 ## Create a Pod
 $ podman pod create
 $ podman pod ps
-$ podman ps -a --pod 
-$ export NAME_POD= [NAME OF POD]
+$ export NAME_POD=[NAME OF POD]
+$ podman ps --pod 
+
 
 ## Add a Container to an existing POD
 $ podman run -dt --pod $NAME_POD docker.io/library/alpine:latest top
@@ -57,6 +58,23 @@ $ podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
 $ podman pod ps
 $ podman ps -a --pod
 $ curl http://localhost:32597
+
+# DELETE POD
+$ podman pod stop --all
+$ podman pod rm -f --all
+
+## PODMAN TO KUBE (NOT YET IMPLEMENTED WITH ROOTLESS)
+
+$ sudo podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
+$ sudo podman ps
+$ sudo podman generate kube nginx  > nginx.yml
+$ sudo podman generate kube --service nginx > nginx_service.yml
+$ less nginx_service.yml
+$ sudo podman pod stop --all
+$ sudo podman pod rm -f --all
+$ kubectl create -f nginx_service.yml 
+$ kubectl get svc
+$ curl http://{ADRESSE IP}
 
 
 # Podman rootless
