@@ -20,24 +20,44 @@ $ podman info
 
 # start httpd container
 ```
-$ podman run -dt -p 8080:8080/tcp -e HTTPD_VAR_RUN=/var/run/httpd -e HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d \
+$ sudo podman run -dt --ip=10.88.64.128 -p 8080:8080/tcp -e HTTPD_VAR_RUN=/var/run/httpd -e HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d \
                   -e HTTPD_MAIN_CONF_PATH=/etc/httpd/conf \
                   -e HTTPD_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/httpd/ \
                   registry.fedoraproject.org/f27/httpd /usr/bin/run-httpd
 
-$ podman image ls -a
-$ podman ps -a
-$ podman inspect -l | grep IPAddress\"
+$ sudo podman image ls -a
+$ sudo podman ps
+$ podman ps
+$ export IPADRESS=$(sudo podman inspect --format '{{ .NetworkSettings.IPAddress }}' -l)
 ```
 
 # Testing httpd Server
-$ curl http://<IP_address>:8080
+$ echo $IPADRESS
+$ curl http://$IPADRESS:8080
+
+# Cleaning 
+$ sudo podman rm -f --all
 
 # Podman and pods
 
+$ podman pod --help
+
+## Create a Pod
+$ podman pod create
+$ podman pod ps
+$ podman ps -a --pod 
+$ export NAME_POD= [NAME OF POD]
+
+## Add a Container to an existing POD
+$ podman run -dt --pod $NAME_POD docker.io/library/alpine:latest top
+$ podman ps -a --pod
+
+# RUN A NEW POD nginx
 $ podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
+$ podman pod ps
 $ podman ps -a --pod
 $ curl http://localhost:32597
+
 
 # Podman rootless
 ```

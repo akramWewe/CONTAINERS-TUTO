@@ -1,30 +1,3 @@
-
-# See if crio process is active
-```
-$ ps aux | grep crio
-$ cat /etc/crictl.yaml
-```
-## demo-crio
-```
-$ kubectl version
-$ kubectl run httpd --generator=run-pod/v1 --image=httpd
-$ kubectl get po
-$ kubectl get pods -o wide --show-all
-curl http://<ip>
-```
-# get images with crictl
-```
-$ sudo crictl images
-$ sudo crictl ps
-$ sudo crictl pods
-$ sudo crictl pull alpine
-$ sudo crictl images
-```
-
-# delete all
-```
-kubectl delete po,deployment --all 
-```
 ## Test crio security
 
 # Change conf file  sudo vi /etc/crio/crio.conf
@@ -60,7 +33,7 @@ do
 done
 ```
 
-# clean all
+# exit container
 ```
-$ kubectl delete po,deployment --all
+$ exit
 ```

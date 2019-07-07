@@ -8,11 +8,12 @@
 # hide the evidence
 clear
 
-# Put your stuff here
+
 pe "podman-machine ssh WSC 'ps aux | grep crio'"
 pe "podman-machine ssh WSC 'cat /etc/crictl.yaml'"
 pe "podman-machine ssh WSC 'kubectl version'"
 pe "podman-machine ssh WSC 'kubectl run httpd --generator=run-pod/v1 --image=httpd'"
+
 # Will wait max 5 seconds until user presses
 PROMPT_TIMEOUT=5
 wait
