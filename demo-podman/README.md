@@ -32,39 +32,45 @@ $ export IPADRESS=$(sudo podman inspect --format '{{ .NetworkSettings.IPAddress 
 ```
 
 # Testing httpd Server
+```
 $ echo $IPADRESS
 $ curl http://$IPADRESS:8080
-
-# Cleaning 
+```
+# Cleaning
+```
 $ sudo podman rm -f --all
-
+```
 # Podman and pods
-
+```
 $ podman pod --help
-
+```
 ## Create a Pod
+```
 $ podman pod create
 $ podman pod ps
 $ export NAME_POD=[NAME OF POD]
 $ podman ps --pod 
-
+```
 
 ## Add a Container to an existing POD
+```
 $ podman run -dt --pod $NAME_POD docker.io/library/alpine:latest top
 $ podman ps -a --pod
-
+```
 # RUN A NEW POD nginx
+```
 $ podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
 $ podman pod ps
 $ podman ps -a --pod
 $ curl http://localhost:32597
-
+```
 # DELETE POD
+```
 $ podman pod stop --all
 $ podman pod rm -f --all
-
+```
 ## PODMAN TO KUBE (NOT YET IMPLEMENTED WITH ROOTLESS)
-
+```
 $ sudo podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
 $ sudo podman pod ps
 $ sudo podman generate kube nginx  > nginx.yml
@@ -76,29 +82,32 @@ $ sudo podman play kube nginx.yml
 $ sudo podman pod ps
 $ kubectl create -f nginx_service.yml
 $ kubectl get svc
-
+```
 ## This is will not work, why ?
+```
 $ kubectl logs nginx
-
+```
 
 # Podman rootless
+## Create a file in my system owned by root.
 ```
-$ cat /etc/passwd
-$ cat /etc/subuid
-$ cat /etc/subgid
-$ podman run alpine cat /proc/self/uid_map /proc/self/gid_map
-```
-
-# Run a command in a modified user namespace
-```
-$ ls -ld /home/tc/
-$ buildah unshare ls -ld /home/tc/
+$ sudo bash -c "echo Test > /tmp/test"
+$ sudo chmod 600 /tmp/test 
+$ sudo ls -l /tmp/test
 ```
 
-# Montrer les id process
+## volume-mount the file into a container running with a user namespace map 0:100000:5000.
 ```
-podman run -d alpine sleep 1000
-podman top --latest pid hpid
+$ sudo podman run -ti -v /tmp/test:/tmp/test:Z --uidmap 0:100000:5000 fedora sh
+# id
+# ls -l /tmp/test
+# cat /tmp/test
+```
+
+## Process created by podman
+```
+$ sudo podman run --uidmap 0:100000:5000 -d fedora sleep 1000
+ps -ef | grep sleep
 ```
 
 # clean all 
