@@ -66,15 +66,19 @@ $ podman pod rm -f --all
 ## PODMAN TO KUBE (NOT YET IMPLEMENTED WITH ROOTLESS)
 
 $ sudo podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
-$ sudo podman ps
+$ sudo podman pod ps
 $ sudo podman generate kube nginx  > nginx.yml
 $ sudo podman generate kube --service nginx > nginx_service.yml
 $ less nginx_service.yml
 $ sudo podman pod stop --all
 $ sudo podman pod rm -f --all
-$ kubectl create -f nginx_service.yml 
+$ sudo podman play kube nginx.yml
+$ sudo podman pod ps
+$ kubectl create -f nginx_service.yml
 $ kubectl get svc
-$ curl http://{ADRESSE IP}
+
+## This is will not work, why ?
+$ kubectl logs nginx
 
 
 # Podman rootless
