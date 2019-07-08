@@ -4,12 +4,6 @@
 $ podman-machine ssh PCD-CRIO-19
 ```
 
-# know version podman
-
-```
-$ podman version
-```
-
 # Get details about podman
 
 ```
@@ -18,7 +12,7 @@ $ podman info
 
 # Registries list: /etc/containers/registries.conf
 
-# start httpd container
+# start httpd container and testing it
 ```
 $ sudo podman run -dt --ip=10.88.64.128 -p 8080:8080/tcp -e HTTPD_VAR_RUN=/var/run/httpd -e HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d \
                   -e HTTPD_MAIN_CONF_PATH=/etc/httpd/conf \
@@ -27,18 +21,11 @@ $ sudo podman run -dt --ip=10.88.64.128 -p 8080:8080/tcp -e HTTPD_VAR_RUN=/var/r
 
 $ sudo podman image ls -a
 $ sudo podman ps
-$ podman ps
-$ export IPADRESS=$(sudo podman inspect --format '{{ .NetworkSettings.IPAddress }}' -l)
-```
-
-# Testing httpd Server
-```
-$ echo $IPADRESS
-$ curl http://$IPADRESS:8080
+$ curl http://10.88.64.128:8080
 ```
 # Cleaning
 ```
-$ sudo podman rm -f --all
+$ sudo podman rm -f --all && sudo podman rmi -f --all
 ```
 # Podman and pods
 ```
@@ -48,7 +35,7 @@ $ podman pod --help
 ```
 $ podman pod create
 $ podman pod ps
-$ export NAME_POD=[NAME OF POD]
+$ export NAME_POD=$(podman pod ps --format json | jq -r .[0].name)
 $ podman ps --pod 
 ```
 
@@ -59,27 +46,31 @@ $ podman ps -a --pod
 ```
 # RUN A NEW POD nginx
 ```
-$ podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
-$ podman pod ps
-$ podman ps -a --pod
-$ curl http://localhost:32597
-```
-# DELETE POD
-```
-$ podman pod stop --all
-$ podman pod rm -f --all
-```
-## PODMAN TO KUBE (NOT YET IMPLEMENTED WITH ROOTLESS)
-```
 $ sudo podman run -dt --pod new:nginx -p 32597:80 quay.io/libpod/alpine_nginx:latest
 $ sudo podman pod ps
+$ sudo podman ps -a --pod
+$ sudo podman ps
+$ podman ps
+$ curl http://localhost:32597
+
+```
+
+## PODMAN TO KUBE (NOT YET IMPLEMENTED WITH ROOTLESS)
+```
 $ sudo podman generate kube nginx  > nginx.yml
 $ sudo podman generate kube --service nginx > nginx_service.yml
 $ less nginx_service.yml
+```
+
+## Clean up
+
+```
 $ sudo podman pod stop --all
 $ sudo podman pod rm -f --all
 $ sudo podman play kube nginx.yml
 $ sudo podman pod ps
+$ sudo podman pod rm -f --all
+$ sudo podman rm --all
 $ kubectl create -f nginx_service.yml
 $ kubectl get svc
 ```
@@ -91,14 +82,14 @@ $ kubectl logs nginx
 # Podman rootless
 ## Create a file in my system owned by root.
 ```
-$ sudo bash -c "echo Test > /tmp/test"
+$ sudo bash -c "echo WespeakCloud > /tmp/test"
 $ sudo chmod 600 /tmp/test 
 $ sudo ls -l /tmp/test
 ```
 
 ## volume-mount the file into a container running with a user namespace map 0:100000:5000.
 ```
-$ sudo podman run -ti -v /tmp/test:/tmp/test:Z --uidmap 0:100000:5000 fedora sh
+$ sudo podman run -ti -v /tmp/test:/tmp/test --uidmap 0:100000:5000 fedora sh
 # id
 # ls -l /tmp/test
 # cat /tmp/test
@@ -107,12 +98,13 @@ $ sudo podman run -ti -v /tmp/test:/tmp/test:Z --uidmap 0:100000:5000 fedora sh
 ## Process created by podman
 ```
 $ sudo podman run --uidmap 0:100000:5000 -d fedora sleep 1000
-ps -ef | grep sleep
+$ ps -ef | grep sleep
 ```
 
 # clean all 
 ```
-$ podman pod rm -f --all
-$ podman rmi -f --all
-$ podman rm --all
+$ podman pod rm -f --all && sudo podman pod rm -f --all
+$ podman rm -f --all && sudo podman rm -f --all
+$ podman rmi -f --all & sudo podman rmi -f --all
+$ kubectl delete svc,pod nginx
 ```

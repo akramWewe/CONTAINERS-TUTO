@@ -12,6 +12,7 @@ tce-load -i crio k3s
 tce-load -iw curl
 tce-load -iw git
 tce-load -iw bash
+tce-load -iw jq
 
 ```
 # start process crio
