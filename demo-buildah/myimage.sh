@@ -11,10 +11,10 @@ buildah config --label maintainer="Akram BLOUZA <akram.blouza@wescale.fr>" $cont
 buildah run $container yum install httpd -y
 
 # Let’s create custom index.html file.
-echo "Welcome to WeSpeakCloud !" > index.html
+echo "Welcome to WeSpeakCloud !" > /tmp/index.html
 
 # Grab the source code outside of the container
-buildah copy $container index.html /var/www/html/index.html
+buildah copy $container /tmp/index.html /var/www/html/index.html
 
 
 # Comfigure entrypoint for the container
