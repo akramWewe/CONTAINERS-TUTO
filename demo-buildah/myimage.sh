@@ -21,4 +21,4 @@ buildah copy $container index.html /var/www/html/index.html
 buildah config --entrypoint "/usr/sbin/httpd -DFOREGROUND" $container 
 
 # Save the new version 
-buildah commit $container WeSpeakCloud-HelloWorld
+buildah commit $container wespeakcloudbuildah
