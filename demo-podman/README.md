@@ -1,33 +1,47 @@
-# start podman-machine
+# First Demo podman
+
+## start podman-machine
 
 ```
-$ podman-machine ssh PCD-CRIO-19
+$ podman-machine ssh WSC
 ```
-
-# Get details about podman
+## Get details about podman
 
 ```
 $ podman info
 ```
 
-# Registries list: /etc/containers/registries.conf
+## Registries list: /etc/containers/registries.conf
 
-# start httpd container and testing it
+## start httpd container and testing it
 ```
-$ sudo podman run -dt --ip=10.88.64.128 -p 8080:8080/tcp -e HTTPD_VAR_RUN=/var/run/httpd -e HTTPD_MAIN_CONF_D_PATH=/etc/httpd/conf.d \
-                  -e HTTPD_MAIN_CONF_PATH=/etc/httpd/conf \
-                  -e HTTPD_CONTAINER_SCRIPTS_PATH=/usr/share/container-scripts/httpd/ \
-                  registry.fedoraproject.org/f27/httpd /usr/bin/run-httpd
+$ sudo podman run -dit --name my-demo-app -p 8080:80 -v /tmp/website/:/usr/local/apache2/htdocs/ httpd:2.4
+$ vi /tmp/website/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Learn Podman with Wescale</title>
+</head>
+<body>
+    <h1>Learn Podman With Us</h1>   
+</body>
+</html>
 
 $ sudo podman image ls -a
 $ sudo podman ps
-$ curl http://10.88.64.128:8080
+$ curl http://10.88.64.130:8080
+
+Show browser http://192.168.99.104:8080  (GET IP with podman-machine ls)
 ```
-# Cleaning
+## Cleaning
 ```
 $ sudo podman rm -f --all && sudo podman rmi -f --all
 ```
-# Podman and pods
+
+# Second demo podman
+
+## Podman and pods
 ```
 $ podman pod --help
 ```
@@ -82,7 +96,7 @@ $ kubectl logs nginx
 # Podman rootless
 ## Create a file in my system owned by root.
 ```
-$ sudo bash -c "echo WespeakCloud > /tmp/test"
+$ sudo bash -c "echo DOCKERLESS> /tmp/test"
 $ sudo chmod 600 /tmp/test 
 $ sudo ls -l /tmp/test
 ```
@@ -101,7 +115,7 @@ $ sudo podman run --uidmap 0:100000:5000 -d fedora sleep 1000
 $ ps -ef | grep sleep
 ```
 
-# clean all 
+## clean all 
 ```
 $ podman pod rm -f --all && sudo podman pod rm -f --all
 $ podman rm -f --all && sudo podman rm -f --all
