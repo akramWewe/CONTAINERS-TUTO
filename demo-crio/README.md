@@ -1,5 +1,6 @@
 ## first demo
 
+```
 $ ps aux | grep crio
 $ cat /etc/crictl.yaml
 $ kubectl run httpd --generator=run-pod/v1 --image=httpd
@@ -12,7 +13,7 @@ $ sudo crictl pods
 $ sudo crictl pull alpine
 $ sudo crictl images
 $ kubectl delete po,deployment --all
-
+```
 ## Test crio security
 
 # Change conf file  sudo vi /etc/crio/crio.conf
