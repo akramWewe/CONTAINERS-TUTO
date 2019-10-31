@@ -1,9 +1,8 @@
 # First Demo podman
-
 ## start podman-machine
 
 ```
-$ podman-machine ssh WSC
+$ podman-machine ssh <nom-machine>
 ```
 ## Get details about podman
 
@@ -11,7 +10,7 @@ $ podman-machine ssh WSC
 $ podman info
 ```
 
-## Registries list: /etc/containers/registries.conf
+##Registries list: /etc/containers/registries.conf
 
 ## start httpd container and testing it
 ```
