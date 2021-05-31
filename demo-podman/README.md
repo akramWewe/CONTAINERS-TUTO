@@ -1,4 +1,10 @@
 # First Demo podman
+Here we use podman-machine (virtual machine with all staff needed to start podman) =>  https://github.com/boot2podman/machine
+
+## create podman-machine
+```
+podman-machine create tuto
+```
 ## start podman-machine
 
 ```
